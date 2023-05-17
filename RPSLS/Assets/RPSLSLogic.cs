@@ -16,6 +16,9 @@ public enum Gesture
 public class RPSLSLogic : MonoBehaviour
 {
     public TextMeshProUGUI resultText;
+    public TextMeshProUGUI computerResultText;
+    public TextMeshProUGUI playerScore;
+    public GameObject RPSLSHolder;
     public Button[] gestureButtons;
 
 
@@ -43,6 +46,7 @@ public class RPSLSLogic : MonoBehaviour
         Gesture computerGesture = (Gesture)Random.Range(0, 5);
 
         DetermineWinner(gesture, computerGesture);
+        DisplayComputerGesture(computerGesture);
     }
 
     private void DetermineWinner(Gesture playerGesture, Gesture computerGesture)
@@ -59,5 +63,10 @@ public class RPSLSLogic : MonoBehaviour
         {
             resultText.text = "Computer wins!";
         }
+    }
+
+    private void DisplayComputerGesture(Gesture gesture)
+    {
+        computerResultText.text = "Computer chose: " + gesture.ToString();
     }
 }
