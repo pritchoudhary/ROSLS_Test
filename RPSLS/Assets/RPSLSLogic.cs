@@ -20,6 +20,9 @@ public class RPSLSLogic : MonoBehaviour
     public TextMeshProUGUI playerScore;
     public GameObject RPSLSHolder;
     public Button[] gestureButtons;
+    public Button playButton;
+
+    private int score = 0;
 
 
     //Using a hash set here, so as to have faster look up times and eliminate the need to perform linear searches
@@ -34,6 +37,8 @@ public class RPSLSLogic : MonoBehaviour
 
     private void Start()
     {
+        score = 0;
+
         for (int i = 0; i < gestureButtons.Length; i++)
         {
             int index = i;
@@ -58,15 +63,27 @@ public class RPSLSLogic : MonoBehaviour
         else if (winConditions[playerGesture].Contains(computerGesture))
         {
             resultText.text = "Player wins!";
+            score++;
+            playerScore.text = score.ToString();
         }
         else
         {
             resultText.text = "Computer wins!";
+            StartCoroutine(GoBacktoMenu());
         }
     }
 
     private void DisplayComputerGesture(Gesture gesture)
     {
         computerResultText.text = "Computer chose: " + gesture.ToString();
+    }
+
+    IEnumerator GoBacktoMenu()
+    {
+        yield return new WaitForSeconds(1);
+        score = 0;
+        playerScore.text = score.ToString();
+        RPSLSHolder.SetActive(false);
+        playButton.gameObject.SetActive(true);
     }
 }
