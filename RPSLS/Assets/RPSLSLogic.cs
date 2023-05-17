@@ -21,8 +21,10 @@ public class RPSLSLogic : MonoBehaviour
     public GameObject RPSLSHolder;
     public Button[] gestureButtons;
     public Button playButton;
+    public TextMeshProUGUI highScoreText;
 
     private int score = 0;
+    private int highScore = 0;
 
 
     //Using a hash set here, so as to have faster look up times and eliminate the need to perform linear searches
@@ -39,6 +41,9 @@ public class RPSLSLogic : MonoBehaviour
     {
         score = 0;
 
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        UpdateHighScoreText();
+
         for (int i = 0; i < gestureButtons.Length; i++)
         {
             int index = i;
@@ -52,6 +57,7 @@ public class RPSLSLogic : MonoBehaviour
 
         DetermineWinner(gesture, computerGesture);
         DisplayComputerGesture(computerGesture);
+        UpdateHighScore();
     }
 
     private void DetermineWinner(Gesture playerGesture, Gesture computerGesture)
@@ -85,5 +91,20 @@ public class RPSLSLogic : MonoBehaviour
         playerScore.text = score.ToString();
         RPSLSHolder.SetActive(false);
         playButton.gameObject.SetActive(true);
+    }
+
+    private void UpdateHighScore()
+    {
+        if (score > highScore)
+        {
+            highScore = score;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            UpdateHighScoreText();
+        }
+    }
+
+    private void UpdateHighScoreText()
+    {
+        highScoreText.text = "High Score: " + highScore.ToString();
     }
 }
